@@ -38,26 +38,11 @@ else
 endif
 endif
 
-# If the first argument is "create-migration"...
-ifeq (create-migration,$(firstword $(MAKECMDGOALS)))
-ifeq ($(words $(MAKECMDGOALS)),2)
-  # use the rest as arguments for "create-migration"
-  $(info $(MAKECMDGOALS))
-  MIGRATION_NAME := $(word 2,$(MAKECMDGOALS))
-
-  ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(ARGS):;@true)
-else
-  $(error create-migration needs 1 argument. See help)
-endif
-endif
-
 # help
 ###
 .PHONY: help
 help: ;@true
-	$(info Makefile for Real Estate project)
+	$(info Makefile for Picachu project)
 	$(info )
 	$(info Avaliable targets: )
 	$(info  * install-local-deps                        - installs all dependencies from poetry.lock to have helpers for code locally)
@@ -65,10 +50,8 @@ help: ;@true
 	$(info  -- next will be executed via docker --)
 	$(info  * poetry                                    - executes poetry command in the **docker** container)
 	$(info  * poetry-install <package> <version>        - installs package in the **docker** container)
-	$(info  * poetry-install-dev <package> <version>    - installs dev package in the **docker** container)
 	$(info  * run                                       - runs the api locally via **docker**)
 	$(info  * test                                      - runs unit tests via **docker**)
-	$(info  * create-migration <migration_name>         - create migration with <migration_name> via **docker**)
 	$(info )
 	$(info Makefile: feel free to extend me!)
 
@@ -95,19 +78,10 @@ poetry-install: ## installs package in the **docker** container
 	docker compose -f docker-compose.yml -f docker-compose.local.yml build --quiet picachu-api
 	docker compose -f docker-compose.yml -f docker-compose.local.yml run --rm --no-deps picachu-api poetry add $(POETRY_INSTALL_PACKAGE_NAME) $(POETRY_INSTALL_PACKAGE_VERSION)
 
-#.PHONY: poetry-install-dev
-#pipenv-install-dev: ## installs dev package in the **docker** container
-#	docker compose -f docker-compose.yml -f docker-compose.local.yml build --quiet picachu-api
-#	docker compose -f docker-compose.yml -f docker-compose.local.yml run --rm --no-deps picachu-api poetry add --dev-dependency $(POETRY_INSTALL_PACKAGE_NAME) $(POETRY_INSTALL_PACKAGE_VERSION)
-
 .PHONY: run
 run: ## runs the api locally via **docker**
-	docker compose -f docker-compose.yml -f docker-compose.local.yml up --build run-api-locally
+	docker compose -f docker-compose.yml up --build run-model-locally
 
 .PHONY: test
 test: ## runs unit tests via **docker**
 	docker compose run --rm --no-deps picachu-api poetry run pytest -v
-
-.PHONY: create-migration
-create-migration: ## create migration with <migration_name> via **docker**
-	docker compose -f docker-compose.yml -f docker-compose.local.yml run --rm --no-deps picachu-api poetry run flask db migrate -m "$(MIGRATION_NAME)"
