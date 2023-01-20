@@ -24,10 +24,6 @@ RUN python -m venv $POETRY_VENV \
 
 ENV PATH="$POETRY_VENV/bin:$PATH"
 
-#RUN pip install opencv-python
-#RUN #pip install sklearn
-RUN pip install imageio
-
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi
 
