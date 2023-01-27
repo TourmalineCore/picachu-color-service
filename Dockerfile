@@ -27,4 +27,4 @@ ENV PATH="$POETRY_VENV/bin:$PATH"
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi
 
-CMD ["poetry", "run", "python", "./colors_model/model.py", "--name", "colors_model","--type","colors"]
+CMD ["poetry", "run", "python", "./application.py"]

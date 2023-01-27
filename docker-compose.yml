@@ -12,7 +12,7 @@ services:
     container_name: colors_model
     build:
       context: .
-    command: poetry run python ./colors_model/model.py --name colors_model  --type colors
+    command: poetry run python ./application.py
     image: colors_model:latest
     restart: unless-stopped
     volumes:
