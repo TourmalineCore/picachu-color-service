@@ -24,6 +24,7 @@ class ColorModel(ProcessingModelBase, ABC):
         super().__init__()
 
     def process_data(self, bytes_data):
+        # ToDo use only utc now
         started_time = datetime.now()
         image = imageio.imread(io.BytesIO(bytes_data), as_gray=False, pilmode="RGB")
         colors, values = self.get_base_colors(image, 4)
@@ -31,6 +32,7 @@ class ColorModel(ProcessingModelBase, ABC):
 
         logging.warning(f'TIME:{ended_time - started_time}')
 
+        # ToDo extract a class with red green blue props?
         return [{'red': str(color[0]), 'green': str(color[1]), 'blue': str(color[2])} for color in colors]
 
     @staticmethod

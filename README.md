@@ -36,7 +36,7 @@ Service with a model for determining the dominant colors of the photo.
     ```bash
     choco install make
     ```
-- [PyCharm Community](https://www.jetbrains.com/pycharm/download/)
+6. [PyCharm Community](https://www.jetbrains.com/pycharm/download/)
 
 ### Configure PyCharm for the project
 

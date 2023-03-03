@@ -2,18 +2,17 @@ version: '3.8'
 
 services:
   run-model-locally:
-    container_name: colors_model-local-starter
+    container_name: colors-model-local-starter
     restart: "no"
     image: tianon/true
     depends_on:
-      - colors_model
+      - colors-model
 
-  colors_model:
-    container_name: colors_model
+  colors-model:
+    container_name: colors-model
     build:
       context: .
-    command: poetry run python ./application.py
-    image: colors_model:latest
+    image: colors-model:latest
     restart: unless-stopped
     volumes:
       - .:/app-workspace

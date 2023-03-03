@@ -1,6 +1,6 @@
 import json
 
-from model.model_result_schema import ResultSchema
+from model.model_result_schema import ModelResultSchema
 from helpers.s3_helper import S3Helper
 
 
@@ -20,7 +20,7 @@ class MessagePacker:
         return photo_id, photo_bytes
 
     def pack_the_message_body(self, photo_id: int, result):
-        valid_result = ResultSchema(
+        valid_result = ModelResultSchema(
             photo_id=photo_id,
             model_type=self.model_type,
             result=result,

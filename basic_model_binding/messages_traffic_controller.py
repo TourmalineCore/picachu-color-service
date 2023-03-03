@@ -1,7 +1,7 @@
 import logging
 
 from basic_model_binding.message_packer import MessagePacker
-from config import rabbitmq_host, rabbitmq_username, rabbitmq_password, rabbitmq_blocked_connection_timeout, \
+from config.rabbitmq_config import rabbitmq_host, rabbitmq_username, rabbitmq_password, rabbitmq_blocked_connection_timeout, \
     rabbitmq_heartbeat, rabbitmq_requests_exchange_name, rabbitmq_models_queues_dlx_name, \
     rabbitmq_models_retry_queue_dlx_name, rabbitmq_models_retry_queue_name, rabbitmq_models_retry_delay_ms, \
     rabbitmq_models_max_retry_number, rabbitmq_results_queue_name
@@ -84,7 +84,6 @@ class MessagesTrafficController:
                 logging.error('Unexpected error occurred: {0}'.format(e))
 
     def request_message_processing(self, channel, method_frame, header_frame, body):
-        logging.warning('Message received.')
         photo_id, photo_bytes = self.message_packer.unpack_the_message_body(body)
 
         try:
@@ -125,7 +124,6 @@ class MessagesTrafficController:
                 delivery_mode=2,
             )
         )
-        logging.warning('Message with result has been sent to the queue.')
 
     def submit_for_processing(self, photo_bytes):
         processing_result = self.model().process_data(photo_bytes)
