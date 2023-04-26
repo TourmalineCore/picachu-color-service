@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  run-model-locally:
+    container_name: colors-model-local-starter
+    restart: "no"
+    image: tianon/true
+    depends_on:
+      - colors-model
+
+  colors-model:
+    container_name: colors-model
+    build:
+      context: .
+    image: colors-model:latest
+    restart: unless-stopped
+    volumes:
+      - .:/app-workspace
+    env_file:
+      - .env
+    networks:
+      - picachu-api-private_picachu-net
+
+networks:
+  picachu-api-private_picachu-net:
+    external: true
