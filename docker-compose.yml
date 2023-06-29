@@ -20,7 +20,35 @@ services:
       - .env
     networks:
       - tourmanique-api-private_tourmanique-net
+    depends_on:
+      - tourmanique-color-postgres
+
+  tourmanique-color-postgres:
+    container_name: tourmanique-color-postgres
+    image: postgres:13.3-alpine
+    restart: always
+    volumes:
+      - tourmanique-color-postgres-data:/var/lib/postgresql/data/
+    healthcheck:
+      test: "pg_isready -U $$POSTGRES_USER"
+      timeout: 10s
+      interval: 10s
+      retries: 3
+    env_file:
+      - .env
+    ports:
+      - "7543:5432"
+    networks:
+      - tourmanique-api-private_tourmanique-net
+
+volumes:
+  tourmanique-color-postgres-data:
 
 networks:
   tourmanique-api-private_tourmanique-net:
     external: true
+
+#networks:
+#  internal: {}
+#  tourmanique-api-private_tourmanique-net:
+#    external: true
